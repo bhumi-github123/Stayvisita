@@ -2,13 +2,20 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const { listingSchema } = require("./schema.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
+
+// ROUTES
+const listingRoutes = require("./routes/listings");
+const reviewRoutes = require("./routes/reviews.js");
+const userRoutes = require("./routes/user.js");
 
 // MongoDB connection
 const MONGO_URL = "mongodb://127.0.0.1:27017/Stayvista";
@@ -35,84 +42,63 @@ app.use(methodOverride("_method"));
 // Static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// ---------------- ROUTES ----------------
+const sessionOptions = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 7*24*60*60*1000,
+    maxAge: 7*24*60*60*1000,
+    httpOnly: true,
+  },
+};
 
-// Redirect root
+// Root
 app.get("/", (req, res) => {
   res.redirect("/listings");
 });
 
-const validateListing = (req, res, next) => {
-  let {error} = listingSchema.validate(req.body);
+app.use(session(sessionOptions));
+app.use(flash());
 
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-}
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
 
-// INDEX
-app.get("/listings", wrapAsync(async (req, res) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index.ejs", { allListings });
-}));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-// NEW
-app.get("/listings/new", (req, res) => {
-  res.render("listings/new.ejs");
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.currUser = req.user;
+  next();
 });
 
-// SHOW
-app.get("/listings/:id", wrapAsync(async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
-  res.render("listings/show.ejs", { listing });
-}));
+// app.get("/demouser", async (req, res) => {
+//   let fakeUser = new User({
+//     email: "student@gmail.com",
+//     username: "delta-student",
+//   });
+   
+//   let registeredUser = await User.register(fakeUser, "helloworld");
+//   res.send(registeredUser);
+// });
 
-// CREATE
-app.post("/listings",
-  validateListing, 
-  wrapAsync(async (req, res) => {
+// ---------------- ROUTES ----------------
 
-  //  let result = listingSchema.validate(req.body);
-  //  console.log(result);
-  // if (result.error) {
-  //   throw new ExpressError(400, result.error);
-  // }
+// LISTING ROUTES
+app.use("/listings", listingRoutes);
 
-  // // Ensure image exists (default image support)
-  // if (!req.body.listing.image) {
-  //   req.body.listing.image = { url: "" };
-  // }
+//Review routes
+app.use("/listings/:id/reviews", reviewRoutes);
 
-  const newListing = new Listing(req.body.listing);
-  await newListing.save();
-  res.redirect("/listings");
-}));
+//user routes
+app.use("/users", userRoutes);
 
-// EDIT
-app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
-  res.render("listings/edit.ejs", { listing });
-}));
 
-// UPDATE
-app.put("/listings/:id",
-  validateListing,
-  wrapAsync(async (req, res) => {
-  await Listing.findByIdAndUpdate(req.params.id, {
-    ...req.body.listing
-  });
 
-  res.redirect(`/listings/${req.params.id}`);
-}));
-
-// DELETE
-app.delete("/listings/:id", wrapAsync(async (req, res) => {
-  await Listing.findByIdAndDelete(req.params.id);
-  res.redirect("/listings");
-}));
 
 // ---------------- ERROR HANDLING ----------------
 

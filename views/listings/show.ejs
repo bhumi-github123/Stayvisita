@@ -1,30 +1,135 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="row mt-3">
-  <div class="col-8 offset-3">
-    <h3>Listing Details:</h3>
+<div class="row mt-4 justify-content-center">
+
+  <!-- TITLE -->
+  <div class="col-md-8 mb-3">
+    <h3 class="fw-semibold"><%= listing.title %></h3>
   </div>
 
-  <div class="card col-6 offset-3 show-card">
-    <img src="<%= listing.image?.url || '/default-image.jpg' %>" class="card-img-top show-img" alt="listing_image">
+  <!-- CARD -->
+  <div class="card col-md-6 p-0">
+
+    <!-- IMAGE -->
+    <img
+      src="<%= listing.image?.url || '/default-image.jpg' %>"
+      class="card-img-top"
+      alt="listing_image"
+    />
+
+    <!-- DETAILS (LEFT ALIGNED) -->
     <div class="card-body">
-      <p class="card-text">
-        <b><%= listing.title %></b><br>
-        <%= listing.description %><br>
-        <strong>Price:</strong> &#8377; <%= listing.price?.toLocaleString("en-IN") || 'N/A' %> <br>
-        <strong>Location:</strong> <%= listing.location || 'N/A' %> <br>
-        <strong>Country:</strong> <%= listing.country || 'N/A' %> <br>
+
+      <p class="text-muted mb-1">
+        <i><%= listing.owner.username %></i>
       </p>
-    </div>
-  </div>
 
-  <div class="col-6 offset-2 mt-3">
-    <div class="btns d-flex gap-2">
-      <a href="/listings/<%= listing._id %>/edit" class="btn edit-btn offset-3">Edit</a>
+      <p class="mb-2">
+        <%= listing.description %>
+      </p>
 
-      <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
-        <button class="btn btn-dark offset-5">Delete</button>
+      <p class="mb-1">
+        <strong>Price:</strong> ₹ <%= listing.price %>
+      </p>
+
+      <p class="mb-1">
+        <strong>Location:</strong> <%= listing.location %>
+      </p>
+
+      <p class="mb-3">
+        <strong>Country:</strong> <%= listing.country %>
+      </p>
+
+      <!-- BUTTONS -->
+      <% if(currUser && currUser._id.equals(listing.owner)) { %>
+      <div class="d-flex gap-2 mb-3">
+        <a
+          href="/listings/<%= listing._id %>/edit"
+          class="btn btn-danger btn-sm"
+        >
+          Edit
+        </a>
+
+        <form
+          method="POST"
+          action="/listings/<%= listing._id %>?_method=DELETE"
+        >
+          <button class="btn btn-dark btn-sm">
+            Delete
+          </button>
+        </form>
+      </div>
+      <% } %>
+
+      <hr />
+
+      <!-- REVIEW FORM -->
+      <h5 class="mb-3">Leave a Review</h5>
+
+      <form
+        action="/listings/<%= listing._id %>/reviews"
+        method="POST"
+        class="needs-validation"
+        novalidate
+      >
+
+        <div class="mb-3">
+          <label class="form-label">Rating</label>
+          <input
+            type="range"
+            min="1"
+            max="5"
+            name="review[rating]"
+            class="form-range"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Comments</label>
+          <textarea
+            name="review[comment]"
+            class="form-control"
+            rows="3"
+            required
+          ></textarea>
+          <div class="invalid-feedback">
+            Please add some comments for review
+          </div>
+        </div>
+
+        <button class="btn btn-outline-dark btn-sm">
+          Submit
+        </button>
       </form>
+
+      <hr />
+
+      <!-- REVIEWS -->
+      <p class="fw-semibold">All Reviews</p>
+
+      <div class="row">
+        <% for (let review of listing.reviews) { %>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h6>⭐ <%= review.rating %> / 5</h6>
+                <p><%= review.comment %></p>
+
+                <form
+                  method="POST"
+                  action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                >
+                  <button class="btn btn-dark btn-sm">
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+
     </div>
   </div>
 </div>
