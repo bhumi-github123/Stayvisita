@@ -1,5 +1,299 @@
 const sampleListings = [
   {
+    title: "Luxury Houseboat in Alleppey",
+    description:
+      "Experience serene backwaters in this traditional Kerala houseboat with modern luxury amenities.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 8500,
+    location: "Alleppey",
+    country: "India",
+  },
+  {
+    title: "Royal Palace Stay in Udaipur",
+    description:
+      "Live like royalty in this heritage palace overlooking the beautiful Lake Pichola.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 12000,
+    location: "Udaipur",
+    country: "India",
+  },
+  {
+    title: "Beachside Villa in Goa",
+    description:
+      "Relax in this stunning beach villa just steps away from the golden sands of Goa.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 9500,
+    location: "Goa",
+    country: "India",
+  },
+  {
+    title: "Mountain Cabin in Manali",
+    description:
+      "Cozy wooden cabin surrounded by snow-capped mountains in scenic Manali.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 6000,
+    location: "Manali",
+    country: "India",
+  },
+  {
+    title: "Desert Camp in Jaisalmer",
+    description:
+      "Enjoy a magical night under the stars in this luxury desert camp in the Thar Desert.",
+    image: {
+      filename: "listingimage",
+      url: "https://content.jdmagicbox.com/v2/comp/jaisalmer/h8/9999p2992.2992.160823174748.r8h8/catalogue/thar-desert-camp-kanoi-jaisalmer-home-stay-j14fh35c73.jpg",
+    },
+    price: 7000,
+    location: "Jaisalmer",
+    country: "India",
+  },
+  {
+    title: "Tea Estate Bungalow in Munnar",
+    description:
+      "Stay amidst lush tea plantations in this charming colonial-style bungalow.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 7500,
+    location: "Munnar",
+    country: "India",
+  },
+  {
+    title: "Cliffside Resort in Varkala",
+    description:
+      "Breathtaking sea views await you at this peaceful cliffside retreat in Varkala.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 8000,
+    location: "Varkala",
+    country: "India",
+  },
+  {
+    title: "Lake View Cottage in Nainital",
+    description:
+      "Charming cottage with panoramic views of Naini Lake and surrounding hills.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 6500,
+    location: "Nainital",
+    country: "India",
+  },
+  {
+    title: "Luxury Apartment in Mumbai",
+    description:
+      "Modern high-rise apartment in the heart of Mumbai with skyline views.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 11000,
+    location: "Mumbai",
+    country: "India",
+  },
+  {
+    title: "Heritage Haveli in Jaipur",
+    description:
+      "Traditional Rajasthani haveli stay with intricate architecture and warm hospitality.",
+    image: {
+      filename: "listingimage",
+      url: "https://image.wedmegood.com/resized/720X/uploads/member/25792/1474280576_7U4A0878.jpg",
+    },
+    price: 9000,
+    location: "Jaipur",
+    country: "India",
+  },
+  {
+    title: "Backwater Villa in Kumarakom",
+    description:
+      "Peaceful waterfront villa surrounded by Kerala’s scenic backwaters.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1589792923962-537704632910?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 8800,
+    location: "Kumarakom",
+    country: "India",
+  },
+  {
+    title: "Hilltop Retreat in Ooty",
+    description:
+      "Quiet hilltop retreat with misty mountain views in beautiful Ooty.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 7200,
+    location: "Ooty",
+    country: "India",
+  },
+  {
+    title: "Beach Hut in Gokarna",
+    description:
+      "Simple and cozy beach hut perfect for a peaceful seaside getaway.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 5000,
+    location: "Gokarna",
+    country: "India",
+  },
+  {
+    title: "Snow View Chalet in Gulmarg",
+    description: "Enjoy snow adventures in this charming chalet in Gulmarg.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 9500,
+    location: "Gulmarg",
+    country: "India",
+  },
+  {
+    title: "Riverfront Camp in Rishikesh",
+    description:
+      "Adventure-filled stay by the Ganges with rafting and yoga experiences.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 5500,
+    location: "Rishikesh",
+    country: "India",
+  },
+  {
+    title: "Coorg Coffee Estate Homestay",
+    description:
+      "Relax in a serene coffee plantation surrounded by lush greenery.",
+    image: {
+      filename: "listingimage",
+      url: "https://q-xx.bstatic.com/xdata/images/hotel/max1024x768/388365856.jpg?k=ea8bf52cb169e4415e0f0e802e70f61bd76511e33c8669d09ddf0fc29c6ec76d&o=",
+    },
+    price: 7800,
+    location: "Coorg",
+    country: "India",
+  },
+  {
+    title: "Luxury Tent in Ranthambore",
+    description:
+      "Wildlife-inspired luxury tent stay near Ranthambore National Park.",
+    image: {
+      filename: "listingimage",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLXkNQNrYmolYU8Fo9M0-eG1iftLnpwLxFJA&s",
+    },
+    price: 8700,
+    location: "Ranthambore",
+    country: "India",
+  },
+  {
+    title: "Spiritual Retreat in Varanasi",
+    description: "Peaceful guesthouse near the ghats of the holy Ganges.",
+    image: {
+      filename: "listingimage",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlmLpCfcmNf7EpaDQLHlYUJOBBF7d_oTZ-gg&s",
+    },
+    price: 4800,
+    location: "Varanasi",
+    country: "India",
+  },
+  {
+    title: "Modern Loft in Bangalore",
+    description:
+      "Stylish loft apartment in the tech hub of India with premium amenities.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 8200,
+    location: "Bangalore",
+    country: "India",
+  },
+  {
+    title: "Beach Resort in Andaman",
+    description:
+      "Crystal-clear waters and white sand beaches at this island paradise.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 13000,
+    location: "Andaman",
+    country: "India",
+  },
+  {
+    title: "Fort View Hotel in Jodhpur",
+    description:
+      "Stay with stunning views of Mehrangarh Fort in the Blue City.",
+    image: {
+      filename: "listingimage",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNgRwptMq8eZPiQGYmClYgdzREc0FjUhTtug&s",
+    },
+    price: 9100,
+    location: "Jodhpur",
+    country: "India",
+  },
+  {
+    title: "Valley View Stay in Dharamshala",
+    description: "Peaceful mountain stay with scenic views in Dharamshala.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 6300,
+    location: "Dharamshala",
+    country: "India",
+  },
+  {
+    title: "Luxury Resort in Hampi",
+    description: "Elegant stay near the historic ruins of Hampi.",
+    image: {
+      filename: "listingimage",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRazgbPW1hz3_MxOGwHu41lLKpS9PPLCqtJew&s",
+    },
+    price: 7600,
+    location: "Hampi",
+    country: "India",
+  },
+  {
+    title: "Seaside Villa in Pondicherry",
+    description: "French-inspired seaside villa in charming Pondicherry.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 8900,
+    location: "Pondicherry",
+    country: "India",
+  },
+  {
+    title: "Eco Lodge in Kaziranga",
+    description: "Nature-friendly eco lodge near Kaziranga National Park.",
+    image: {
+      filename: "listingimage",
+      url: "https://media-cdn.tripadvisor.com/media/photo-s/1a/7e/0c/79/kaziranga-eco-camp.jpg",
+    },
+    price: 6700,
+    location: "Kaziranga",
+    country: "India",
+  },
+  {
     title: "Cozy Beachfront Cottage",
     description:
       "Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.",

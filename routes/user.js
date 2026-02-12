@@ -5,58 +5,28 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const passport = require("passport");
 const { saveRedirectUrl } = require("../middleware.js");
 
-// SIGNUP FORM
-router.get("/signup", (req, res) => {
-  res.render("users/signup");
-});
+const userController = require("../controllers/users.js");
 
-// SIGNUP LOGIC
-router.post("/signup", wrapAsync(async (req, res, next) => {
-  try {
-    let { username, email, password } = req.body;
-    const newUser = new User({ email, username });
-    const registeredUser = await User.register(newUser, password);
+// SIGNUP
+router
+  .route("/signup")
+  .get(userController.renderSignupForm)
+  .post(wrapAsync(userController.signup));
 
-    req.login(registeredUser, (err) => {
-      if (err) return next(err);
-
-      req.flash("success", "Welcome to Stayvista!");
-      res.redirect("/listings");
-    });
-  } catch (e) {
-    req.flash("error", e.message);
-    res.redirect("/users/signup");
-  }
-}));
-
-// LOGIN FORM
-router.get("/login", (req, res) => {
-  res.render("users/login");
-});
-
-// LOGIN LOGIC
-router.post(
-  "/login",
-  saveRedirectUrl,
-  passport.authenticate("local", {
-    failureRedirect: "/users/login",
-    failureFlash: true,
-  }),
-  (req, res) => {
-    req.flash("success", "Welcome back to Stayvista!");
-    const redirectUrl = res.locals.redirectUrl || "/listings";
-    res.redirect(redirectUrl);
-  }
-);
+// LOGIN
+router
+  .route("/login")
+  .get(userController.renderLoginForm)
+  .post(
+    saveRedirectUrl,
+    passport.authenticate("local", {
+      failureRedirect: "/users/login",
+      failureFlash: true,
+    }),
+    userController.login,
+  );
 
 // LOGOUT
-router.get("/logout", (req, res, next) => {
-  req.logout((err) => {
-    if (err) return next(err);
-
-    req.flash("success", "You are logged out now");
-    res.redirect("/listings");
-  });
-});
+router.get("/logout", userController.loggout);
 
 module.exports = router;

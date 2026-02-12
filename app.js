@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
+
 // Importing required packages
 const express = require("express");
 const app = express();
@@ -14,7 +18,7 @@ const User = require("./models/user.js");
 
 // ROUTES
 const listingRoutes = require("./routes/listings");
-const reviewRoutes = require("./routes/reviews.js");
+const reviewRoutes = require("./routes/reviews");
 const userRoutes = require("./routes/user.js");
 
 // MongoDB connection
@@ -47,8 +51,8 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: true,
   cookie: {
-    expires: Date.now() + 7*24*60*60*1000,
-    maxAge: 7*24*60*60*1000,
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
   },
 };
@@ -68,7 +72,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
@@ -81,7 +84,7 @@ app.use((req, res, next) => {
 //     email: "student@gmail.com",
 //     username: "delta-student",
 //   });
-   
+
 //   let registeredUser = await User.register(fakeUser, "helloworld");
 //   res.send(registeredUser);
 // });
@@ -96,9 +99,6 @@ app.use("/listings/:id/reviews", reviewRoutes);
 
 //user routes
 app.use("/users", userRoutes);
-
-
-
 
 // ---------------- ERROR HANDLING ----------------
 
